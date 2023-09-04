@@ -40,9 +40,9 @@ const Faqs: NextPage<Props> = ({ faqs }) => {
 
 export const getStaticProps: GetStaticProps = async () => {
 
-  // const response = await fetch(`${process.env.API_ROUTE}/faqs`)
-  // const faqs = await response.json()
-  const faqs =  faqsData;
+  const response = await fetch(`${process.env.API_ROUTE}/faqs`)
+  const faqs = await response.json()
+
   return {
     props: {
       faqs
