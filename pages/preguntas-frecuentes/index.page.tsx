@@ -8,7 +8,8 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Container } from '@mui/material';
 
 import { FaqsType } from 'dh-marvel/interface/faqs';
-import { faqsData } from 'dh-marvel/components/faqs/faqsData';
+import LayoutGeneral from 'dh-marvel/components/layouts/layout-general';
+
 
 interface Props {
   faqs: FaqsType[]
@@ -16,25 +17,27 @@ interface Props {
 
 const Faqs: NextPage<Props> = ({ faqs }) => {
   return (
-    <Container>
-      {faqs.map(faq => {
-        return (
-          <Accordion key={faq.id}>
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1a-content"
-              id="panel1a-header"
-            >
-              <Typography>{faq.question}</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography>
-                {faq.answer}
-              </Typography>
-            </AccordionDetails>
-          </Accordion>)
-      })}
-    </Container>
+    <LayoutGeneral>
+      <Container>
+        {faqs.map(faq => {
+          return (
+            <Accordion key={faq.id}>
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header"
+              >
+                <Typography>{faq.question}</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography>
+                  {faq.answer}
+                </Typography>
+              </AccordionDetails>
+            </Accordion>)
+        })}
+      </Container>
+    </LayoutGeneral>
   )
 };
 
