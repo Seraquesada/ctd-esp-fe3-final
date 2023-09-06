@@ -21,9 +21,6 @@ const ComicCard: FC<Props> = ({ result }) => {
         router.push(`/checkout/${result.id}`);
     };
 
-    const handleClickComprarUnClick = () => {
-        router.push(`/checkout/${result.id}`);
-    };
 
     return (
         <Card sx={{ maxWidth: 500, padding: 3, marginBottom: 3,  }}>
@@ -48,9 +45,6 @@ const ComicCard: FC<Props> = ({ result }) => {
                 </Button>
                 <Button onClick={handleClickComprar} size="medium" variant="outlined" color="primary">
                     Comprar
-                </Button>
-                <Button onClick={handleClickComprarUnClick} size="medium" variant="outlined" color="primary">
-                    Compra en un Click
                 </Button>
             </CardActions>
         </Card>

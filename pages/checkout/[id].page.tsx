@@ -12,8 +12,9 @@ interface Props {
 const CheckOut : NextPage<Props> = ({ result }) => {
   return (
     <LayoutCheckout>
-      <div>CheckOut</div>
       <ComicCard result={result} />
+      <div>CheckOut</div>
+      
     </LayoutCheckout>
   )
 }
@@ -21,8 +22,8 @@ const CheckOut : NextPage<Props> = ({ result }) => {
 export const getStaticPaths: GetStaticPaths = async () => {
   const comics: Comics = await getComics(undefined, 12);
 
-  const paths = comics.results?.map((comic) => ({
-      params: { id: comic.id}, 
+  const paths = comics.results?.map((comic : Result) => ({
+      params: { id: comic.id.toString()}, 
   }));
 
 
