@@ -16,7 +16,6 @@ interface Props {
 const Index: NextPage<Props> = ({ comics }) => {
 
     const [page, setPage] = useState<number>(1)
-    console.log(page)
     const totalPages = comics?.total && Math.floor(comics?.total / 12)!;
 
     const handleChange = (event: React.ChangeEvent<unknown>, page: number) => {
@@ -39,7 +38,7 @@ const Index: NextPage<Props> = ({ comics }) => {
                 >
                     {comics?.results?.map((result) => (
                         <Grid xs={12} sm={6} md={4} key={result.id} >
-                            <ComicCard result={result} />
+                            <ComicCard result={result} page={page} />
                         </Grid>
                     ))}
 
@@ -51,7 +50,8 @@ const Index: NextPage<Props> = ({ comics }) => {
     )
 }
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getStaticProps: GetStaticProps = async () => {
+    
     const comics = await getComics(undefined, 12)
     return {
         props: {

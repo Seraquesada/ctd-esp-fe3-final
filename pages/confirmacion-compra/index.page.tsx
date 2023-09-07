@@ -7,10 +7,7 @@ const ConfirmacionCompra = ({ }) => {
     //Esto es checkout hasta que funcione la ruta
     return (
         <LayoutCheckout>
-            <Box sx={{ width:"100%",display: "flex",alignContent:"center", justifyContent: "center" }}>
-                
-                <HorizontalLinearStepper />
-            </Box>
+
         </LayoutCheckout>
     )
 }

@@ -9,10 +9,13 @@ import Select from "@mui/material/Select";
 import { Button, FormControl, InputLabel, MenuItem } from "@mui/material";
 import { useState } from 'react';
 import { CheckoutInput } from 'dh-marvel/features/checkout/checkout.types';
+import { postCheckOut } from 'dh-marvel/services/checkout/checkout-service';
 
 interface Props {
     activeStep: number
 }
+
+
 
 const CustomForm: FC<Props> = ({ activeStep }) => {
 
@@ -25,8 +28,9 @@ const CustomForm: FC<Props> = ({ activeStep }) => {
         getValues,
     } = useForm<CheckoutInput>();
 
-    const onSubmit = (data: any) => {
-        console.log(data);
+    const onSubmit = async (data: CheckoutInput) => {
+        const fetch = await postCheckOut(data)
+        console.log(fetch)
     };
 
 
@@ -43,11 +47,11 @@ const CustomForm: FC<Props> = ({ activeStep }) => {
                             <Typography sx={{ paddingBottom: "1rem" }} variant="h4" align="center">
                                 Datos Personales
                             </Typography>
+                            {errors.customer?.name && <span>Este campo es requerido</span>}
                             <Controller
                                 name="customer.name"
                                 control={control}
                                 defaultValue={""}
-                                // Objeto con las reglas de validación ejem: required: true, minLength: 2, maxLength: 10
                                 rules={{ required: true }}
                                 render={({ field }: any) => (
                                     <TextField
@@ -56,15 +60,11 @@ const CustomForm: FC<Props> = ({ activeStep }) => {
                                         label="Nombre"
                                         variant="outlined"
                                         fullWidth
-                                        // Impornte debe tener el name
-                                        // name="name"
                                         sx={{ mb: 2 }}
                                     />
                                 )}
                             />
-
-                            {errors.customer?.name && <span>Este campo es requerido</span>}
-
+                            {errors.customer?.lastname && <span>Este campo es requerido</span>}
                             <Controller
                                 name="customer.lastname"
                                 control={control}
@@ -81,8 +81,8 @@ const CustomForm: FC<Props> = ({ activeStep }) => {
                                     />
                                 )}
                             />
-                            {errors.customer?.lastname && <span>Este campo es requerido</span>}
-                        
+
+                            {errors.customer?.email && <span>Este campo es requerido</span>}
                             <Controller
                                 name="customer.email"
                                 control={control}
@@ -99,7 +99,7 @@ const CustomForm: FC<Props> = ({ activeStep }) => {
                                     />
                                 )}
                             />
-                            {errors.customer?.email && <span>Este campo es requerido</span>}
+
                         </>
 
                     )
@@ -110,7 +110,7 @@ const CustomForm: FC<Props> = ({ activeStep }) => {
                             <Typography sx={{ paddingBottom: "1rem" }} variant="h4" align="center">
                                 Direccion de Entrega
                             </Typography>
-
+                            {errors.customer?.address?.address1 && <span>Este campo es requerido</span>}
                             <Controller
                                 name="customer.address.address1"
                                 control={control}
@@ -127,7 +127,7 @@ const CustomForm: FC<Props> = ({ activeStep }) => {
                                     />
                                 )}
                             />
-                            {errors.customer?.address?.address1 && <span>Este campo es requerido</span>}
+
                             <Controller
                                 name="customer.address.address2"
                                 control={control}
@@ -144,7 +144,7 @@ const CustomForm: FC<Props> = ({ activeStep }) => {
                                     />
                                 )}
                             />
-
+                            {errors.customer?.address?.city && <span>Este campo es requerido</span>}
                             <Controller
                                 name="customer.address.city"
                                 control={control}
@@ -161,13 +161,10 @@ const CustomForm: FC<Props> = ({ activeStep }) => {
                                     />
                                 )}
                             />
-                            {errors.customer?.address?.city && <span>Este campo es requerido</span>}
-                             {/* * Dirección `(requerido)`
-                            * Departamento, piso, etc `(opcional)`
-                            * Ciudad `(requerido)`
-                            * Provincia `(requerido)`
-                            * Código postal `(requerido)` */}
-                                                        <Controller
+
+
+                            {errors.customer?.address?.state && <span>Este campo es requerido</span>}
+                            <Controller
                                 name="customer.address.state"
                                 control={control}
                                 defaultValue={""}
@@ -183,7 +180,8 @@ const CustomForm: FC<Props> = ({ activeStep }) => {
                                     />
                                 )}
                             />
-                            {errors.customer?.address?.state && <span>Este campo es requerido</span>}
+
+                            {errors.customer?.address?.zipCode && <span>Este campo es requerido</span>}
                             <Controller
                                 name="customer.address.zipCode"
                                 control={control}
@@ -200,42 +198,21 @@ const CustomForm: FC<Props> = ({ activeStep }) => {
                                     />
                                 )}
                             />
-                            {errors.customer?.address?.zipCode && <span>Este campo es requerido</span>}
+
 
                         </>
 
                     )
                     }
 
-                    {/* {activeStep === 2 && (
+                    {activeStep === 2 && (
                         <>
                             <Typography sx={{ paddingBottom: "1rem" }} variant="h4" align="center">
                                 Datos del Pago
                             </Typography>
+                            {errors.card?.number && <span>Este campo es requerido</span>}
                             <Controller
-                                name="name"
-                                control={control}
-                                defaultValue={""}
-                                
-                                rules={{ required: true }}
-                                render={({ field }: any) => (
-                                    <TextField
-                                        {...field}
-                                        type="text"
-                                        label="Nombre"
-                                        variant="outlined"
-                                        fullWidth
-                                        // Impornte debe tener el name
-                                        // name="name"
-                                        sx={{ mb: 2 }}
-                                    />
-                                )}
-                            />
-
-                            {errors.name && <span>Este campo es requerido</span>}
-
-                            <Controller
-                                name="lastName"
+                                name="card.number"
                                 control={control}
                                 defaultValue={""}
                                 rules={{ required: true }}
@@ -243,24 +220,81 @@ const CustomForm: FC<Props> = ({ activeStep }) => {
                                     <TextField
                                         {...field}
                                         type="text"
-                                        label="Apellido"
+                                        label="Numero de la Tarjeta"
                                         variant="outlined"
-                                        // Impornte debe tener el name
-                                        // name="lastName"
                                         fullWidth
                                         sx={{ mb: 2 }}
                                     />
                                 )}
                             />
-                            {errors.lastName && <span>Este campo es requerido</span>}
+
+                            {errors.card?.nameOnCard && <span>Este campo es requerido</span>}
+                            <Controller
+                                name="card.nameOnCard"
+                                control={control}
+                                defaultValue={""}
+                                rules={{ required: true }}
+                                render={({ field }: any) => (
+                                    <TextField
+                                        {...field}
+                                        type="text"
+                                        label="Nombre en la Tarjeta"
+                                        variant="outlined"
+                                        fullWidth
+                                        sx={{ mb: 2 }}
+                                    />
+                                )}
+                            />
+
+                            {errors.card?.expDate && <span>Este campo es requerido</span>}
+                            <Controller
+                                name="card.expDate"
+                                control={control}
+                                defaultValue={""}
+                                rules={{ required: true }}
+                                render={({ field }: any) => (
+                                    <TextField
+                                        {...field}
+                                        type="text"
+                                        label="Fecha de Vencimiento"
+                                        variant="outlined"
+                                        fullWidth
+                                        sx={{ mb: 2 }}
+                                    />
+                                )}
+                            />
+
+                            {errors.card?.cvc && <span>Este campo es requerido</span>}
+                            <Controller
+                                name="card.cvc"
+                                control={control}
+                                defaultValue={""}
+                                rules={{ required: true }}
+                                render={({ field }: any) => (
+                                    <TextField
+                                        {...field}
+                                        type="password"
+                                        label="Código de seguridad"
+                                        variant="outlined"
+                                        fullWidth
+                                        sx={{ mb: 2 }}
+                                    />
+                                )}
+                            />
+
+                            <Box>
+                                <Button
+                                    type="submit"
+                                    variant="contained"
+                                    color="primary"
+                                    sx={{ mt: 2 }}
+                                >
+                                    Enviar
+                                </Button>
+                            </Box>
                         </>
-
                     )
-                    } */}
-
-
-
-
+                    }
                 </form>
             </Paper>
         </Box>

@@ -1,66 +1,86 @@
+
 export interface Comics {
-    offset:  number;
-    limit:   number;
-    total:   number;
-    count:   number;
+    offset: number;
+    limit: number;
+    total: number;
+    count: number;
     results: Result[];
 }
 
 export interface Result {
-    id:                 string;
-    digitalId:          number;
-    title:              string;
-    issueNumber:        number;
+    id: string;
+    digitalId: number;
+    title: string;
+    issueNumber: number;
     variantDescription: string;
-    description:        null | string;
-    modified:           string;
-    isbn:               string;
-    upc:                string;
-    diamondCode:        DiamondCode;
-    ean:                string;
-    issn:               string;
-    format:             string;
-    pageCount:          number;
-    textObjects:        TextObject[];
-    resourceURI:        string;
-    urls:               URL[];
-    series:             Series;
-    variants:           Series[];
-    collections:        any[];
-    collectedIssues:    Series[];
-    dates:              DateElement[];
-    prices:             Price[];
-    thumbnail:          Thumbnail;
-    images:             Thumbnail[];
-    creators:           Creators;
-    characters:         Characters;
-    stories:            Stories;
-    events:             Characters;
+    description: null | string;
+    modified: string;
+    isbn: string;
+    upc: string;
+    diamondCode: DiamondCode;
+    ean: string;
+    issn: string;
+    format: string;
+    pageCount: number;
+    textObjects: TextObject[];
+    resourceURI: string;
+    urls: URL[];
+    series: Series;
+    variants: Series[];
+    collections: any[];
+    collectedIssues: Series[];
+    dates: DateElement[];
+    prices: Price[];
+    price: number;
+    oldPrice: number;
+    stock:number;
+    thumbnail: Thumbnail;
+    images: Thumbnail[];
+    creators: Creators;
+    characters: Characters;
+    stories: Stories;
+    events: Characters;
 }
 
+
+export interface Character {
+    id: number
+    name: string
+    description: null | string;
+    modified: string;
+    thumbnail: Thumbnail;
+    resourceURI: string;
+    comics :  Characters
+    series: Series;
+    stories: Stories;
+    events: Characters;
+    urls: URL[];
+}
+
+
 export interface Characters {
-    available:     number;
+    available: number;
     collectionURI: string;
-    items:         Series[];
-    returned:      number;
+    items: Series[];
+    returned: number;
 }
 
 export interface Series {
     resourceURI: string;
-    name:        string;
+    name: string;
 }
 
 export interface Creators {
-    available:     number;
+    available: number;
     collectionURI: string;
-    items:         CreatorsItem[];
-    returned:      number;
+    items: CreatorsItem[];
+    returned: number;
 }
 
 export interface CreatorsItem {
     resourceURI: string;
-    name:        string;
-    role:        string;
+    name: string;
+    role: string;
 }
 
 export interface DateElement {
@@ -81,7 +101,7 @@ export enum DiamondCode {
 }
 
 export interface Thumbnail {
-    path:      string;
+    path: string;
     extension: Extension;
 }
 
@@ -90,7 +110,7 @@ export enum Extension {
 }
 
 export interface Price {
-    type:  PriceType;
+    type: PriceType;
     price: number;
 }
 
@@ -100,16 +120,16 @@ export enum PriceType {
 }
 
 export interface Stories {
-    available:     number;
+    available: number;
     collectionURI: string;
-    items:         StoriesItem[];
-    returned:      number;
+    items: StoriesItem[];
+    returned: number;
 }
 
 export interface StoriesItem {
     resourceURI: string;
-    name:        string;
-    type:        ItemType;
+    name: string;
+    type: ItemType;
 }
 
 export enum ItemType {
@@ -119,12 +139,12 @@ export enum ItemType {
 }
 
 export interface TextObject {
-    type:     string;
+    type: string;
     language: string;
-    text:     string;
+    text: string;
 }
 
 export interface URL {
     type: string;
-    url:  string;
+    url: string;
 }

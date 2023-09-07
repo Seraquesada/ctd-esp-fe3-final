@@ -37,27 +37,14 @@ export default function HorizontalLinearStepper() {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
 
-    const handleSkip = () => {
-        if (!isStepOptional(activeStep)) {
-            // You probably want to guard against something like this,
-            // it should never occur unless someone's actively trying to break something.
-            throw new Error("You can't skip a step that isn't optional.");
-        }
 
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-        setSkipped((prevSkipped) => {
-            const newSkipped = new Set(prevSkipped.values());
-            newSkipped.add(activeStep);
-            return newSkipped;
-        });
-    };
 
     const handleReset = () => {
         setActiveStep(0);
     };
 
     return (
-        <Box sx={{ width: 'auto', display: "flex", flexDirection: "column", alignCenter: "center" }}>
+        <Box sx={{ width: '65%', display: "flex", flexDirection: "column", alignCenter: "center" }}>
             <Stepper activeStep={activeStep}>
                 {steps.map((label) => {
                     return (
@@ -69,7 +56,7 @@ export default function HorizontalLinearStepper() {
             </Stepper>
             {activeStep === steps.length ? (
                 //cuando esta todo completo
-                <React.Fragment>
+                <>
                     <Typography sx={{ mt: 2, mb: 1 }}>
                         All steps completed - you&apos;re finished
                     </Typography>
@@ -77,9 +64,9 @@ export default function HorizontalLinearStepper() {
                         <Box sx={{ flex: '1 1 auto' }} />
                         <Button onClick={handleReset}>Reset</Button>
                     </Box>
-                </React.Fragment>
+                </>
             ) : (
-                <React.Fragment>
+                <>
                     <CustomForm activeStep={activeStep} />
 
                     <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
@@ -97,7 +84,7 @@ export default function HorizontalLinearStepper() {
                             {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
                         </Button>
                     </Box>
-                </React.Fragment>
+                </>
             )}
         </Box>
     );

@@ -1,13 +1,43 @@
 import LayoutGeneral from 'dh-marvel/components/layouts/layout-general'
-import { NextPage } from 'next'
+import { Character, Characters } from 'dh-marvel/interface/comic'
+import { getCharacter } from 'dh-marvel/services/marvel/marvel.service'
+import { GetServerSideProps, GetStaticPaths, GetStaticProps, NextPage } from 'next'
+import { Box, Card} from '@mui/material';
 import React from 'react'
+import Image from 'next/image';
 
-const PersonajePage: NextPage = () => {
+interface Props {
+    character: Character
+}
+
+const PersonajePage: NextPage<Props> = ({ character }) => {
+
     return (
         <LayoutGeneral >
-            <div>Character</div>
+            <Box >
+                <Card sx={{ marginTop: 10, padding: 3, gap: 10, height: "fit-content" }}>
+                    <div>{character.name}</div>
+                    <Image
+                        alt={character.name}
+                        src={character.thumbnail.path.concat(".", character.thumbnail.extension)}
+                        width={300}
+                        height={300}
+                    />
+                </Card>
+            </Box>
         </LayoutGeneral>
     )
 }
 
-export default PersonajePage
+export default PersonajePage;
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const id = Number(context.params?.id);
+    const character = await getCharacter(id)
+
+    return {
+        props: {
+            character
+        }
+    }
+}

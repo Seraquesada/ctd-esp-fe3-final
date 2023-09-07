@@ -7,10 +7,11 @@ import Link from 'next/link';
 
 interface Props {
     result: Result
+    page?: number
 }
 
-const ComicCard: FC<Props> = ({ result }) => {
-    console.log()
+const ComicCard: FC<Props> = ({ result, page }) => {
+
     const router = useRouter();
 
     const handleClick = () => {
@@ -23,30 +24,42 @@ const ComicCard: FC<Props> = ({ result }) => {
 
 
     return (
-        <Card sx={{ maxWidth: 500, padding: 3, marginBottom: 3,  }}>
+        <Card sx={{ width: "auto", maxWidth: 500,height:500, padding: 3, marginBottom: 3, marginTop: 3 }}>
             <Image
                 width={250}
                 height={250}
-                src={result?.images[0]?.path.concat(".",result?.images[0]?.extension)}
+                src={result?.thumbnail.path.concat(".", result?.thumbnail.extension) }
                 alt={result.title}
             />
             <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
                     {result.title}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
-                    {result.description}
-                </Typography>
             </CardContent>
 
-            <CardActions>
-                <Button onClick={handleClick} size="medium" variant="outlined" color="primary">
-                    Ver Detalle
-                </Button>
-                <Button onClick={handleClickComprar} size="medium" variant="outlined" color="primary">
-                    Comprar
-                </Button>
-            </CardActions>
+            {
+                router.pathname === "/" ?
+                    <CardActions>
+                        <Button onClick={handleClick} size="medium" variant="outlined" color="primary">
+                            Ver Detalle
+                        </Button>
+                        <Button onClick={handleClickComprar} size="medium" variant="outlined" color="primary">
+                            Comprar
+                        </Button>
+                    </CardActions>
+                    : router.pathname === "/comics/[id]" ? 
+                    <CardActions >
+                        <Button onClick={handleClickComprar} disabled={result.stock === 0 ? true :false} size="medium" variant="outlined" color="primary">
+                        {result.stock === 0 ? "Sin Stock" : "Comprar"}
+                        </Button>
+                    </CardActions> 
+                    : 
+                    <CardActions >
+                        <Button onClick={handleClick} size="medium" variant="outlined" color="primary">
+                            Ver Detalle
+                        </Button>
+                    </CardActions>
+            }
         </Card>
     )
 }

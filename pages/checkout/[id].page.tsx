@@ -4,45 +4,48 @@ import { Comics, Result } from 'dh-marvel/interface/comic'
 import { getComic, getComics } from 'dh-marvel/services/marvel/marvel.service'
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import React from 'react'
+import Box from '@mui/material/Box';
+import HorizontalLinearStepper from 'dh-marvel/components/customStepper/CustomStepper.component'
 
 interface Props {
   result: Result
 }
 
-const CheckOut : NextPage<Props> = ({ result }) => {
+const CheckOut: NextPage<Props> = ({ result }) => {
   return (
     <LayoutCheckout>
-      <ComicCard result={result} />
-      <div>CheckOut</div>
-      
+      <Box sx={{ width: "100%", display: "flex", alignContent: "center", justifyContent: "center" }}>
+        <ComicCard result={result} />
+        <HorizontalLinearStepper />
+      </Box>
     </LayoutCheckout>
   )
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const comics: Comics = await getComics(undefined, 12);
+  const comics = await getComics(undefined, 12);
 
-  const paths = comics.results?.map((comic : Result) => ({
-      params: { id: comic.id.toString()}, 
+  const paths = comics.data.results?.map((comic: Result) => ({
+    params: { id: comic.id.toString() },
   }));
 
 
   return {
-      paths,
-      fallback: false,
+    paths,
+    fallback: false,
   };
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  console.log(params)
+
   const id = Number(params?.id);
 
   const character = await getComic(id)
 
   return {
-      props: {
-          result: character
-      }
+    props: {
+      result: character
+    }
   }
 }
 
