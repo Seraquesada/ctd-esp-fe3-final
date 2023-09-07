@@ -17,7 +17,7 @@ export type CheckoutInput = {
         expDate: string,
         nameOnCard: string
     },
-    order?: {
+    order: {
         name: string;
         image: string;
         price: number;
