@@ -1,5 +1,5 @@
 import React from 'react'
-import { NextPage, GetStaticProps, GetStaticPaths } from 'next'
+import { NextPage, GetStaticProps, } from 'next'
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -41,21 +41,6 @@ const Faqs: NextPage<Props> = ({ faqs }) => {
     )
 };
 
-export const getStaticPaths: GetStaticPaths = async () => {
-    const response = await fetch(`${process.env.API_ROUTE}/faqs`)
-    const faqs = await response.json()
-
-
-    const paths = faqs?.map((faq: FaqsType) => ({
-        params: { id: faq.id },
-    }));
-
-
-    return {
-        paths,
-        fallback: false,
-    };
-};
 
 export const getStaticProps: GetStaticProps = async () => {
 
