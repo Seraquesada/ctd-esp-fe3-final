@@ -9,7 +9,7 @@ import Select from "@mui/material/Select";
 import { Button, FormControl, InputLabel, MenuItem } from "@mui/material";
 import { useState } from 'react';
 import { CheckoutInput } from 'dh-marvel/features/checkout/checkout.types';
-// import { postCheckOut } from 'dh-marvel/services/checkout/checkout-service';
+import { postCheckOut } from 'dh-marvel/services/checkout/checkout-service';
 
 interface Props {
     activeStep: number
@@ -29,7 +29,7 @@ const CustomForm: FC<Props> = ({ activeStep }) => {
     } = useForm<CheckoutInput>();
 
     const onSubmit = async (data: CheckoutInput) => {
-        //const fetch = await postCheckOut(data)
+        const fetch = await postCheckOut(data)
         console.log(fetch)
     };
 
