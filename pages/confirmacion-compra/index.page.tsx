@@ -4,7 +4,6 @@ import Box from '@mui/material/Box';
 import LayoutCheckout from 'dh-marvel/components/layouts/layout-checkout';
 
 const ConfirmacionCompra = ({ }) => {
-    //Esto es checkout hasta que funcione la ruta
     return (
         <LayoutCheckout>
 
