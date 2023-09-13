@@ -1,14 +1,18 @@
-import HorizontalLinearStepper from 'dh-marvel/components/customStepper/CustomStepper.component'
 import React from 'react'
-import Box from '@mui/material/Box';
 import LayoutCheckout from 'dh-marvel/components/layouts/layout-checkout';
+import { NextPage } from 'next';
 
-const ConfirmacionCompra = ({ }) => {
+
+
+
+const ConfirmacionCompra: NextPage = ({  }) => {
+
     return (
         <LayoutCheckout>
-
+            {/* <ComicCard result={result} /> */}
         </LayoutCheckout>
     )
 }
 
-export default ConfirmacionCompra
+export default ConfirmacionCompra;
+

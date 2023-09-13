@@ -1,29 +1,27 @@
 import ComicCard from 'dh-marvel/components/comicCard/ComicCard.component'
 import LayoutGeneral from 'dh-marvel/components/layouts/layout-general'
-import { Comics, Result } from 'dh-marvel/interface/comic'
+import { Result } from 'dh-marvel/interface/comic'
 import { getComic, getComics } from 'dh-marvel/services/marvel/marvel.service'
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import React from 'react'
-import { useMediaQuery, Accordion, AccordionSummary, AccordionDetails, Box, Container, CardActions, CardContent, Typography, Card } from '@mui/material';
+import { useMediaQuery, Accordion, AccordionSummary, AccordionDetails, CardContent, Container, Typography, Card } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Link from 'next/link'
 
 interface Props {
     result: Result
-    page?: number
 }
 
-const ComicPage: NextPage<Props> = ({ result, page }) => {
+const ComicPage: NextPage<Props> = ({ result }) => {
     const theme = useTheme();
-    const matches = useMediaQuery(theme.breakpoints.up('sm'));
-
+    
 
 
     return (
         <LayoutGeneral >
             <Container sx={{ display: "flex", flexWrap: "no-wrap", flexDirection: "row", alignContent: "center", marginX: "10rem", marginY: "2rem" }}>
-                <ComicCard result={result} page={page} />
+                <ComicCard result={result} />
                 <Card sx={{ width: "100%", height: "max-content", padding: 2, marginLeft: 4 }}>
                     <CardContent>
                         <Typography gutterBottom variant="body1"  >
@@ -33,8 +31,8 @@ const ComicPage: NextPage<Props> = ({ result, page }) => {
                         <Typography gutterBottom  >
                             <p>
                                 Old Price
-                                <span style={{ textDecoration: 'line-through', marginLeft:"10px" }}>
-                                        {`$ ${ result.oldPrice}`}
+                                <span style={{ textDecoration: 'line-through', marginLeft: "10px" }}>
+                                    {`$ ${result.oldPrice}`}
                                 </span>
                             </p>
                         </Typography>

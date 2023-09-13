@@ -3,14 +3,14 @@ import { Result } from 'dh-marvel/interface/comic';
 import { Button, CardActions, CardContent, Typography, Card } from '@mui/material';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
+
 
 interface Props {
     result: Result
-    page?: number
+    
 }
 
-const ComicCard: FC<Props> = ({ result, page }) => {
+const ComicCard: FC<Props> = ({ result }) => {
 
     const router = useRouter();
 

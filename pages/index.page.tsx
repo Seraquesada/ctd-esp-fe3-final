@@ -1,27 +1,32 @@
-import type { GetStaticProps, NextPage } from 'next'
+import type { GetServerSideProps, GetStaticProps, NextPage } from 'next'
 import Head from 'next/head'
 import BodySingle from "dh-marvel/components/layouts/body/single/body-single";
 import { getComics } from 'dh-marvel/services/marvel/marvel.service';
 import ComicCard from 'dh-marvel/components/comicCard/ComicCard.component';
-import { Comics, } from 'dh-marvel/interface/comic';
+import { IData, } from 'dh-marvel/interface/comic';
 import LayoutGeneral from 'dh-marvel/components/layouts/layout-general';
 import { Pagination, Box } from '@mui/material';
 import { useState } from "react"
 import Grid from '@mui/material/Unstable_Grid2';
+import { useRouter } from 'next/router';
 
 interface Props {
-    comics?: Comics
+    comics: IData
+
 }
 
 const Index: NextPage<Props> = ({ comics }) => {
 
-    const [page, setPage] = useState<number>(1)
-    const totalPages = comics?.total && Math.floor(comics?.total / 12)!;
+    const router = useRouter()
+
+    const [currentPage, setCurrentPage] = useState<number>(0)
+    const totalPages = comics?.total && Math.floor(comics?.total / 12);
 
     const handleChange = (event: React.ChangeEvent<unknown>, page: number) => {
-        setPage(page);
+        setCurrentPage(page);
+        if (page !== 1) { router.push(`/?page=${page}`) }
+        if (page === 1) { router.push(`/`) }
     };
-
 
 
     return (
@@ -38,24 +43,31 @@ const Index: NextPage<Props> = ({ comics }) => {
                 >
                     {comics?.results?.map((result) => (
                         <Grid xs={12} sm={6} md={4} key={result.id} >
-                            <ComicCard result={result} page={page} />
+                            <ComicCard result={result} />
                         </Grid>
                     ))}
 
                 </Grid>
 
-                <Pagination onChange={handleChange} count={totalPages} page={page} />
+                <Pagination onChange={handleChange} count={totalPages} page={currentPage} />
             </BodySingle>
         </LayoutGeneral>
     )
 }
 
-export const getStaticProps: GetStaticProps = async () => {
-    
-    const comics = await getComics(undefined, 12)
+export const getServerSideProps: GetServerSideProps = async ({ query, res }) => {
+    // esta raro lo se, pero funca 
+    const pageSize = 12
+    const page = Number(query.page ?? 0);
+    const offset = (page * pageSize) - 12 === -12 ? 0 : (page * pageSize) - 12;
+    const comics = await getComics(offset, pageSize);
+
+    res.setHeader("Cache-Control", "public, s-maxage=10, stale-while-revalidate");
+
     return {
         props: {
-            comics: comics.data
+            comics: comics.data,
+
         }
     }
 }

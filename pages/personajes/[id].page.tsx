@@ -1,8 +1,8 @@
 import LayoutGeneral from 'dh-marvel/components/layouts/layout-general'
-import { Character, Characters } from 'dh-marvel/interface/comic'
+import { Character } from 'dh-marvel/interface/comic'
 import { getCharacter } from 'dh-marvel/services/marvel/marvel.service'
-import { GetServerSideProps, GetStaticPaths, GetStaticProps, NextPage } from 'next'
-import { Box, Card} from '@mui/material';
+import { GetServerSideProps, NextPage } from 'next'
+import { Box, Card } from '@mui/material';
 import React from 'react'
 import Image from 'next/image';
 
@@ -23,6 +23,7 @@ const PersonajePage: NextPage<Props> = ({ character }) => {
                         width={300}
                         height={300}
                     />
+                    <p>{character?.description}</p>
                 </Card>
             </Box>
         </LayoutGeneral>

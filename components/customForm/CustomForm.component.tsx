@@ -1,36 +1,65 @@
 import React, { FC } from 'react'
 
-import { useForm, Controller } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
-import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
-import Select from "@mui/material/Select";
-import { Button, FormControl, InputLabel, MenuItem } from "@mui/material";
-import { useState } from 'react';
+import { Button } from "@mui/material";
 import { CheckoutInput } from 'dh-marvel/features/checkout/checkout.types';
 import { postCheckOut } from 'dh-marvel/services/checkout/checkout-service';
+import { Result } from 'dh-marvel/interface/comic';
+import DataPersonal from './DataPersonal.component';
+import DataDireccionEntrega from './DataDireccionEntrega.component';
+import DataDelPago from './DataDelPago.component';
 
 interface Props {
     activeStep: number
+    result: Result
+    handleBack: () => void
+    handleNext: () => void
 }
 
 
 
-const CustomForm: FC<Props> = ({ activeStep }) => {
+const CustomForm: FC<Props> = ({ result, activeStep, handleBack, handleNext }) => {
 
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
-    const {
-        control,
-        register,
-        formState: { errors },
-        handleSubmit,
-        getValues,
-    } = useForm<CheckoutInput>();
+    const { handleSubmit, getValues } = useFormContext();
 
-    const onSubmit = async (data: CheckoutInput) => {
-        const fetch = await postCheckOut(data)
-        console.log(fetch)
+    const onSubmit = (data: any) => {
+
+        const name = result?.title
+        const image = result?.thumbnail.path.concat(".", result?.thumbnail.extension)
+        const price = result.price
+
+        const dataFinal: CheckoutInput = {
+            customer: {
+                name: getValues().name,
+                lastname: getValues().lastname,
+                email: getValues().email,
+                address: {
+                    address1: getValues().address1,
+                    address2: getValues().address2,
+                    city: getValues().city,
+                    state: getValues().state,
+                    zipCode: getValues().zipCode,
+                },
+            },
+            card: {
+                number: getValues().number,
+                cvc: getValues().cvc,
+                expDate: getValues().expDate,
+                nameOnCard: getValues().nameOnCard,
+            },
+            order: {
+                name,
+                image,
+                price
+            }
+        }
+        data = dataFinal
+        postCheckOut(data)
+
     };
 
 
@@ -42,259 +71,17 @@ const CustomForm: FC<Props> = ({ activeStep }) => {
             >
 
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    {activeStep === 0 && (
-                        <>
-                            <Typography sx={{ paddingBottom: "1rem" }} variant="h4" align="center">
-                                Datos Personales
-                            </Typography>
-                            {errors.customer?.name && <span>Este campo es requerido</span>}
-                            <Controller
-                                name="customer.name"
-                                control={control}
-                                defaultValue={""}
-                                rules={{ required: true }}
-                                render={({ field }: any) => (
-                                    <TextField
-                                        {...field}
-                                        type="text"
-                                        label="Nombre"
-                                        variant="outlined"
-                                        fullWidth
-                                        sx={{ mb: 2 }}
-                                    />
-                                )}
-                            />
-                            {errors.customer?.lastname && <span>Este campo es requerido</span>}
-                            <Controller
-                                name="customer.lastname"
-                                control={control}
-                                defaultValue={""}
-                                rules={{ required: true }}
-                                render={({ field }: any) => (
-                                    <TextField
-                                        {...field}
-                                        type="text"
-                                        label="Apellido"
-                                        variant="outlined"
-                                        fullWidth
-                                        sx={{ mb: 2 }}
-                                    />
-                                )}
-                            />
+                    {activeStep === 0 && <DataPersonal />}
 
-                            {errors.customer?.email && <span>Este campo es requerido</span>}
-                            <Controller
-                                name="customer.email"
-                                control={control}
-                                defaultValue={""}
-                                rules={{ required: true }}
-                                render={({ field }: any) => (
-                                    <TextField
-                                        {...field}
-                                        type="text"
-                                        label="Email"
-                                        variant="outlined"
-                                        fullWidth
-                                        sx={{ mb: 2 }}
-                                    />
-                                )}
-                            />
+                    {activeStep === 1 && < DataDireccionEntrega />}
 
-                        </>
+                    {activeStep === 2 && <DataDelPago />}
 
-                    )
-                    }
-
-                    {activeStep === 1 && (
-                        <>
-                            <Typography sx={{ paddingBottom: "1rem" }} variant="h4" align="center">
-                                Direccion de Entrega
-                            </Typography>
-                            {errors.customer?.address?.address1 && <span>Este campo es requerido</span>}
-                            <Controller
-                                name="customer.address.address1"
-                                control={control}
-                                defaultValue={""}
-                                rules={{ required: true }}
-                                render={({ field }: any) => (
-                                    <TextField
-                                        {...field}
-                                        type="text"
-                                        label="Dirección"
-                                        variant="outlined"
-                                        fullWidth
-                                        sx={{ mb: 2 }}
-                                    />
-                                )}
-                            />
-
-                            <Controller
-                                name="customer.address.address2"
-                                control={control}
-                                defaultValue={""}
-                                rules={{ required: false }}
-                                render={({ field }: any) => (
-                                    <TextField
-                                        {...field}
-                                        type="text"
-                                        label="Dirección 2 "
-                                        variant="outlined"
-                                        fullWidth
-                                        sx={{ mb: 2 }}
-                                    />
-                                )}
-                            />
-                            {errors.customer?.address?.city && <span>Este campo es requerido</span>}
-                            <Controller
-                                name="customer.address.city"
-                                control={control}
-                                defaultValue={""}
-                                rules={{ required: true }}
-                                render={({ field }: any) => (
-                                    <TextField
-                                        {...field}
-                                        type="text"
-                                        label="Ciudad"
-                                        variant="outlined"
-                                        fullWidth
-                                        sx={{ mb: 2 }}
-                                    />
-                                )}
-                            />
-
-
-                            {errors.customer?.address?.state && <span>Este campo es requerido</span>}
-                            <Controller
-                                name="customer.address.state"
-                                control={control}
-                                defaultValue={""}
-                                rules={{ required: true }}
-                                render={({ field }: any) => (
-                                    <TextField
-                                        {...field}
-                                        type="text"
-                                        label="Provincia"
-                                        variant="outlined"
-                                        fullWidth
-                                        sx={{ mb: 2 }}
-                                    />
-                                )}
-                            />
-
-                            {errors.customer?.address?.zipCode && <span>Este campo es requerido</span>}
-                            <Controller
-                                name="customer.address.zipCode"
-                                control={control}
-                                defaultValue={""}
-                                rules={{ required: true }}
-                                render={({ field }: any) => (
-                                    <TextField
-                                        {...field}
-                                        type="text"
-                                        label="Codigo Postal"
-                                        variant="outlined"
-                                        fullWidth
-                                        sx={{ mb: 2 }}
-                                    />
-                                )}
-                            />
-
-
-                        </>
-
-                    )
-                    }
-
-                    {activeStep === 2 && (
-                        <>
-                            <Typography sx={{ paddingBottom: "1rem" }} variant="h4" align="center">
-                                Datos del Pago
-                            </Typography>
-                            {errors.card?.number && <span>Este campo es requerido</span>}
-                            <Controller
-                                name="card.number"
-                                control={control}
-                                defaultValue={""}
-                                rules={{ required: true }}
-                                render={({ field }: any) => (
-                                    <TextField
-                                        {...field}
-                                        type="text"
-                                        label="Numero de la Tarjeta"
-                                        variant="outlined"
-                                        fullWidth
-                                        sx={{ mb: 2 }}
-                                    />
-                                )}
-                            />
-
-                            {errors.card?.nameOnCard && <span>Este campo es requerido</span>}
-                            <Controller
-                                name="card.nameOnCard"
-                                control={control}
-                                defaultValue={""}
-                                rules={{ required: true }}
-                                render={({ field }: any) => (
-                                    <TextField
-                                        {...field}
-                                        type="text"
-                                        label="Nombre en la Tarjeta"
-                                        variant="outlined"
-                                        fullWidth
-                                        sx={{ mb: 2 }}
-                                    />
-                                )}
-                            />
-
-                            {errors.card?.expDate && <span>Este campo es requerido</span>}
-                            <Controller
-                                name="card.expDate"
-                                control={control}
-                                defaultValue={""}
-                                rules={{ required: true }}
-                                render={({ field }: any) => (
-                                    <TextField
-                                        {...field}
-                                        type="text"
-                                        label="Fecha de Vencimiento"
-                                        variant="outlined"
-                                        fullWidth
-                                        sx={{ mb: 2 }}
-                                    />
-                                )}
-                            />
-
-                            {errors.card?.cvc && <span>Este campo es requerido</span>}
-                            <Controller
-                                name="card.cvc"
-                                control={control}
-                                defaultValue={""}
-                                rules={{ required: true }}
-                                render={({ field }: any) => (
-                                    <TextField
-                                        {...field}
-                                        type="password"
-                                        label="Código de seguridad"
-                                        variant="outlined"
-                                        fullWidth
-                                        sx={{ mb: 2 }}
-                                    />
-                                )}
-                            />
-
-                            <Box>
-                                <Button
-                                    type="submit"
-                                    variant="contained"
-                                    color="primary"
-                                    sx={{ mt: 2 }}
-                                >
-                                    Enviar
-                                </Button>
-                            </Box>
-                        </>
-                    )
-                    }
+                    <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+                        {activeStep >= 1 && <Button onClick={handleBack}>Anterior</Button>}
+                        {activeStep < 2 && <Button onClick={handleNext}>Siguiente</Button>}
+                        {activeStep === 2 && <Button variant="contained" type="submit" >Enviar</Button>}
+                    </Box>
                 </form>
             </Paper>
         </Box>

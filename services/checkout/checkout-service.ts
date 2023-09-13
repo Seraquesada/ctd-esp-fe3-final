@@ -9,7 +9,7 @@ export const postCheckOut = async (data: CheckoutInput) => {
         body: JSON.stringify(data)
     };
 
-    const req = await fetch(`${API_ROUTE}/api/checkout-orden`, options)
+    const req = await fetch(`http://localhost:3000/api/checkout-orden`, options)
     const res = await req.json()
     return res;
 }

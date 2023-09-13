@@ -1,5 +1,5 @@
 
-export interface Comics {
+export interface IData {
     offset: number;
     limit: number;
     total: number;
@@ -42,7 +42,6 @@ export interface Result {
     events: Characters;
 }
 
-
 export interface Character {
     id: number
     name: string
@@ -56,7 +55,6 @@ export interface Character {
     events: Characters;
     urls: URL[];
 }
-
 
 export interface Characters {
     available: number;
