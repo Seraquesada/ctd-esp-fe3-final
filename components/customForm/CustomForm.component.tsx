@@ -22,8 +22,6 @@ interface Props {
 
 const CustomForm: FC<Props> = ({ result, activeStep, handleBack, handleNext }) => {
 
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
     const { handleSubmit, getValues } = useFormContext();
 
     const onSubmit = (data: any) => {
@@ -58,7 +56,8 @@ const CustomForm: FC<Props> = ({ result, activeStep, handleBack, handleNext }) =
             }
         }
         data = dataFinal
-        postCheckOut(data)
+        console.log(data, dataFinal)
+        //postCheckOut(data)
 
     };
 

@@ -4,7 +4,6 @@ import { NextPage } from 'next';
 
 
 
-
 const ConfirmacionCompra: NextPage = ({  }) => {
 
     return (

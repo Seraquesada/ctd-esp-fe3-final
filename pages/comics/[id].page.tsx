@@ -4,8 +4,7 @@ import { Result } from 'dh-marvel/interface/comic'
 import { getComic, getComics } from 'dh-marvel/services/marvel/marvel.service'
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next'
 import React from 'react'
-import { useMediaQuery, Accordion, AccordionSummary, AccordionDetails, CardContent, Container, Typography, Card } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { Accordion, AccordionSummary, AccordionDetails, CardContent, Container, Typography, Card } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Link from 'next/link'
 
@@ -14,9 +13,6 @@ interface Props {
 }
 
 const ComicPage: NextPage<Props> = ({ result }) => {
-    const theme = useTheme();
-    
-
 
     return (
         <LayoutGeneral >

@@ -6,7 +6,7 @@ import { CustomTextField } from './customInput/CustomTextField';
 
 const DataPersonal = () => {
 
-    const {control, formState:{errors} }  = useFormContext();
+    const {control, formState: {errors} }  = useFormContext();
 
     return (
         <>

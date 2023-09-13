@@ -1,4 +1,4 @@
-import type { GetServerSideProps, GetStaticProps, NextPage } from 'next'
+import type { GetServerSideProps, NextPage } from 'next'
 import Head from 'next/head'
 import BodySingle from "dh-marvel/components/layouts/body/single/body-single";
 import { getComics } from 'dh-marvel/services/marvel/marvel.service';
@@ -12,7 +12,6 @@ import { useRouter } from 'next/router';
 
 interface Props {
     comics: IData
-
 }
 
 const Index: NextPage<Props> = ({ comics }) => {
@@ -59,6 +58,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query, res }) => 
     // esta raro lo se, pero funca 
     const pageSize = 12
     const page = Number(query.page ?? 0);
+
     const offset = (page * pageSize) - 12 === -12 ? 0 : (page * pageSize) - 12;
     const comics = await getComics(offset, pageSize);
 

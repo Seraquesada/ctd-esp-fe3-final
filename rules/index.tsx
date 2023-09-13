@@ -1,4 +1,3 @@
-import { CheckoutInput } from "dh-marvel/features/checkout/checkout.types";
 import * as yup from "yup";
 
 export const schema = yup.object().shape({
