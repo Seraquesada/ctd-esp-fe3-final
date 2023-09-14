@@ -1,25 +1,58 @@
-import React from 'react'
+import React, { FC } from 'react'
 import Typography from "@mui/material/Typography";
-import { useFormContext } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { CustomTextField } from './customInput/CustomTextField';
+import { ErrorMessage } from '@hookform/error-message';
+import { Button } from '@mui/material';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { schemaAddress } from 'rules';
 
-const DataDireccionEntrega = () => {
+import { DevTool } from "@hookform/devtools";
+interface Props {
+    handlerAddress: (data: any) => void
+    handleNext: () => void
+}
 
-    const { control, formState: { errors } } = useFormContext();
+const DataDireccionEntrega: FC<Props> = ({ handlerAddress, handleNext }) => {
+
+
+
+    const {
+        control,
+        formState: { errors },
+        handleSubmit,
+    } = useForm({ resolver: yupResolver(schemaAddress) })
+
+
+
+    const onSubmit = (data: any) => {
+        handlerAddress(data)
+    }
 
     return (
-        <>
+        <form onSubmit={handleSubmit(onSubmit)}>
             <Typography sx={{ paddingBottom: "1rem" }} variant="h4" align="center">
                 Direccion de Entrega
             </Typography>
+
+            <Typography variant="caption" color="red">
+                <ErrorMessage errors={errors} name="address1" />
+            </Typography>
+
             <CustomTextField
+                required={true}
                 name="address1"
                 label="Dirección"
                 type="text"
                 control={control}
                 defaultValue=""
             />
+
+            <Typography variant="caption" color="red">
+                <ErrorMessage errors={errors} name="address2" />
+            </Typography>
             <CustomTextField
+                required={true}
                 name="address2"
                 label="Departamento, piso o altura"
                 type="text"
@@ -27,7 +60,12 @@ const DataDireccionEntrega = () => {
                 defaultValue=""
             />
 
+            <Typography variant="caption" color="red">
+                <ErrorMessage errors={errors} name="city" />
+            </Typography>
+
             <CustomTextField
+                required={true}
                 name="city"
                 label="Ciudad"
                 type="text"
@@ -35,7 +73,12 @@ const DataDireccionEntrega = () => {
                 defaultValue=""
             />
 
+            <Typography variant="caption" color="red">
+                <ErrorMessage errors={errors} name="state" />
+            </Typography>
+
             <CustomTextField
+                required={true}
                 name="state"
                 label="Provincia"
                 type="text"
@@ -43,14 +86,23 @@ const DataDireccionEntrega = () => {
                 defaultValue=""
             />
 
+            <Typography variant="caption" color="red">
+                <ErrorMessage errors={errors} name="zipCode" />
+            </Typography>
+
             <CustomTextField
+                required={true}
                 name="zipCode"
                 label="Código postal"
                 type="text"
                 control={control}
                 defaultValue=""
             />
-        </>
+            {<Button variant="contained" type="submit"> Siguiente</Button>}
+
+        </form>
+
+
     )
 }
 

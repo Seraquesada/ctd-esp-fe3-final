@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 
 import { useFormContext } from "react-hook-form";
 import Box from "@mui/material/Box";
@@ -10,6 +10,14 @@ import { Result } from 'dh-marvel/interface/comic';
 import DataPersonal from './DataPersonal.component';
 import DataDireccionEntrega from './DataDireccionEntrega.component';
 import DataDelPago from './DataDelPago.component';
+import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import { useRouter } from 'next/router';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { schema } from 'rules';
+import * as yup from "yup";
+
 
 interface Props {
     activeStep: number
@@ -19,46 +27,76 @@ interface Props {
 }
 
 
+const defaultValues = {
+    customer: {
+        name: "",
+        lastname: "",
+        email: "",
+    },
+    address: {
+        address1: "",
+        address2: "",
+        city: "",
+        state: "",
+        zipCode: "",
+    },
+    card: {
+        number: "",
+        cvc: "",
+        expDate: "",
+        nameOnCard: "",
+    },
+
+};
 
 const CustomForm: FC<Props> = ({ result, activeStep, handleBack, handleNext }) => {
 
-    const { handleSubmit, getValues } = useFormContext();
+    // const { handleSubmit, getValues, getFieldState, formState } = useFormContext();
 
-    const onSubmit = (data: any) => {
+    
+    
+    
+    const [data, setData] = useState(defaultValues)
+    console.log(data.address, data.card,data.customer)
+    const router = useRouter()
+    const redirect = (response: CheckoutInput) => {
+        if (response?.card) {
+            router.push(`/checkout?=comicId${result.id}`);
+        }
+    }
 
+    const handlerCustomer = (data: any) => {
+        setData({ ...data, customer: data })
+        handleNext()
+
+    }
+    const handlerAddress = (data: any) => {
+        setData({ ...data, address: data })
+        handleNext()
+    }
+    const handlerCard = (data: any) => {
+        setData({ ...data, card: data })
+        
+    }
+
+    const onSubmit = async (data: any) => {
         const name = result?.title
         const image = result?.thumbnail.path.concat(".", result?.thumbnail.extension)
         const price = result.price
 
-        const dataFinal: CheckoutInput = {
-            customer: {
-                name: getValues().name,
-                lastname: getValues().lastname,
-                email: getValues().email,
-                address: {
-                    address1: getValues().address1,
-                    address2: getValues().address2,
-                    city: getValues().city,
-                    state: getValues().state,
-                    zipCode: getValues().zipCode,
-                },
-            },
-            card: {
-                number: getValues().number,
-                cvc: getValues().cvc,
-                expDate: getValues().expDate,
-                nameOnCard: getValues().nameOnCard,
-            },
+        const { order } =
+        {
             order: {
                 name,
                 image,
                 price
             }
         }
-        data = dataFinal
-        console.log(data, dataFinal)
-        //postCheckOut(data)
+        data.order = order
+        console.log(data)
 
+        // await postCheckOut(data)
+        // redirect(await postCheckOut(data))
     };
 
 
@@ -69,19 +107,22 @@ const CustomForm: FC<Props> = ({ result, activeStep, handleBack, handleNext }) =
                 sx={{ p: "32px", display: "flex", flexDirection: "column", gap: 3 }}
             >
 
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    {activeStep === 0 && <DataPersonal />}
+                <div >
 
-                    {activeStep === 1 && < DataDireccionEntrega />}
+                    {activeStep === 0 && <DataPersonal handleNext={handleNext} handlerCustomer={handlerCustomer} />}
 
-                    {activeStep === 2 && <DataDelPago />}
+                    {activeStep === 1 && < DataDireccionEntrega handleNext={handleNext} handlerAddress={handlerAddress} />}
+
+                    {activeStep === 2 && <DataDelPago handlerCard={handlerCard} />}
+
 
                     <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-                        {activeStep >= 1 && <Button onClick={handleBack}>Anterior</Button>}
-                        {activeStep < 2 && <Button onClick={handleNext}>Siguiente</Button>}
-                        {activeStep === 2 && <Button variant="contained" type="submit" >Enviar</Button>}
+                        {/* {activeStep >= 1 && <Button onClick={handleBack}>Anterior</Button>}
+                        {activeStep < 2 && <Button variant="contained" onClick={handleNext}>Siguiente</Button>}
+                        {activeStep === 2 && <Button variant="contained" type="submit" >Enviar</Button>} */}
                     </Box>
-                </form>
+                </div>
+
             </Paper>
         </Box>
     )

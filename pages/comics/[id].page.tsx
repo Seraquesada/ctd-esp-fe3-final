@@ -87,12 +87,10 @@ const ComicPage: NextPage<Props> = ({ result }) => {
 
 
 export const getStaticPaths: GetStaticPaths = async () => {
-    const comics = await getComics(undefined, 12);
-
+    const comics = await getComics();
     const paths = comics.data.results?.map((comic: Result) => ({
         params: { id: comic.id.toString() },
     }));
-
 
     return {
         paths,

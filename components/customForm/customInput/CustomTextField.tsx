@@ -26,7 +26,7 @@ export const CustomTextField = ({
             control={control}
             defaultValue={defaultValue}
             render={({ field }) => (
-                <TextField
+                < TextField
                     {...field}
                     type={type}
                     label={label}
@@ -36,7 +36,8 @@ export const CustomTextField = ({
                     sx={{ mb: 2 }}
                     {...textFieldProps}
                 />
-            )}
+            )
+            }
         />
     );
 };

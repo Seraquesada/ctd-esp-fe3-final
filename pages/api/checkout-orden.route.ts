@@ -31,6 +31,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
     }
     try {
         const body: CheckoutInput = req.body;
+        
         if (body.customer.address?.address2 === invalidAddress) {
             res.status(400).json(ERROR_INCORRECT_ADDRESS);
             return

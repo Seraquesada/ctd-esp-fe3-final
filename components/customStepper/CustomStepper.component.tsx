@@ -3,13 +3,9 @@ import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
-
+import { FormProvider, useForm } from "react-hook-form";
 import CustomForm from '../customForm/CustomForm.component';
 import { Result } from 'dh-marvel/interface/comic';
-import { yupResolver } from "@hookform/resolvers/yup";
-import { FormProvider, useForm } from "react-hook-form";
-import { schema } from 'rules';
-import * as yup from "yup";
 
 
 const steps = ["Datos Personales", "Dirección de entrega", "Datos del pago",];
@@ -20,7 +16,7 @@ interface Props {
 
 export default function HorizontalLinearStepper({ result }: Props) {
     const [activeStep, setActiveStep] = React.useState(0);
-    
+
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
     };
@@ -29,14 +25,10 @@ export default function HorizontalLinearStepper({ result }: Props) {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
 
-    type CheckoutInput = yup.InferType<typeof schema>;
-
-	const method = useForm<CheckoutInput>({
-		resolver: yupResolver(schema),
-		defaultValues: {},
-	});
+    const methods = useForm()
 
     return (
+
         <Box sx={{ width: '65%', display: "flex", flexDirection: "column", alignCenter: "center" }}>
             <Stepper activeStep={activeStep}>
                 {steps.map((label) => {
@@ -47,10 +39,10 @@ export default function HorizontalLinearStepper({ result }: Props) {
                     );
                 })}
             </Stepper>
-
-            <FormProvider {...method}>
+            
                 <CustomForm activeStep={activeStep} result={result} handleBack={handleBack} handleNext={handleNext} />
-            </FormProvider>
+            
         </Box>
+
     );
 }

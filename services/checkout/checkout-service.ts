@@ -11,5 +11,6 @@ export const postCheckOut = async (data: CheckoutInput) => {
 
     const req = await fetch(`http://localhost:3000/api/checkout-orden`, options)
     const res = await req.json()
+    console.log(req,res )
     return res;
 }
