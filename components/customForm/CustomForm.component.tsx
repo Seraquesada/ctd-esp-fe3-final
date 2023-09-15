@@ -122,8 +122,7 @@ const CustomForm: FC<Props> = ({ result, activeStep, handleBack, handleNext }) =
     const onSubmit = async () => {
         try {
             const dataFormateada = formatearInfo(info);
-            const response = await postCheckOut(dataFormateada);
-            
+            await postCheckOut(dataFormateada);
         } catch (error) {
             console.error('API call error:', error);
         }
@@ -152,6 +151,8 @@ const CustomForm: FC<Props> = ({ result, activeStep, handleBack, handleNext }) =
             ...info,
             card: { ...data },
         })
+
+        // onSubmit puede ir aca
 
     }
 
