@@ -46,7 +46,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
         }
         if (body.card.number === validCard) {
             res.status(200).json({data: body});
-            return
+            return {}
         }
         res.status(400).json(ERROR_CARD_DATA_INCORRECT);
     } catch (err) {

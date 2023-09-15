@@ -7,12 +7,14 @@ import React from 'react'
 import { Accordion, AccordionSummary, AccordionDetails, CardContent, Container, Typography, Card } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 interface Props {
     result: Result
 }
 
 const ComicPage: NextPage<Props> = ({ result }) => {
+
 
     return (
         <LayoutGeneral >

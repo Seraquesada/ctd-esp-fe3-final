@@ -5,8 +5,8 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { Container } from '@mui/material';
-
+import { Container,Box } from '@mui/material';
+import BodySingle from "dh-marvel/components/layouts/body/single/body-single";
 import { FaqsType } from 'dh-marvel/interface/faqs';
 import LayoutGeneral from 'dh-marvel/components/layouts/layout-general';
 
@@ -19,9 +19,10 @@ const Faqs: NextPage<Props> = ({ faqs }) => {
     return (
         <LayoutGeneral>
             <Container>
+            <BodySingle title={"Preguntas Frecuentes"}>
                 {faqs.map(faq => {
                     return (
-                        <Accordion key={faq.id}>
+                        <Accordion  key={faq.id}>
                             <AccordionSummary
                                 expandIcon={<ExpandMoreIcon />}
                                 aria-controls="panel1a-content"
@@ -36,6 +37,7 @@ const Faqs: NextPage<Props> = ({ faqs }) => {
                             </AccordionDetails>
                         </Accordion>)
                 })}
+                </BodySingle>
             </Container>
         </LayoutGeneral>
     )

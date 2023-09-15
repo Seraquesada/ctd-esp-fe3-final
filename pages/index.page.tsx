@@ -11,7 +11,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import { useRouter } from 'next/router';
 
 interface Props {
-    comics: IData
+    comics?: IData
 }
 
 const Index: NextPage<Props> = ({ comics }) => {

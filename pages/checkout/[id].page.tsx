@@ -15,7 +15,7 @@ const CheckOut: NextPage<Props> = ({ result }) => {
     return (
         <LayoutCheckout>
             <Box sx={{ width: "100%", display: "flex", alignContent: "center", justifyContent: "center" }}>
-                <ComicCard result={result} />
+                <ComicCard result={result}  />
                 <HorizontalLinearStepper result={result} />
             </Box>
         </LayoutCheckout>

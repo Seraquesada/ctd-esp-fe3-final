@@ -9,7 +9,6 @@ import { schemaCard } from 'rules';
 
 interface Props {
   handlerCard: (data: any) => void
-
 }
 
 
@@ -18,14 +17,16 @@ const DataDelPago: FC<Props> = ({ handlerCard, }) => {
   const {
     getValues,
     control,
-    formState: { errors },
+    formState,
     handleSubmit,
-  } = useForm({ resolver: yupResolver(schemaCard) })
+  } = useForm({ resolver: yupResolver(schemaCard),reValidateMode:"onChange" })
+
+  const { errors, isSubmitted, isSubmitting } = formState;
+
 
   const onSubmit = (data: any) => {
     handlerCard(data)
   }
-
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -86,7 +87,7 @@ const DataDelPago: FC<Props> = ({ handlerCard, }) => {
       />
 
 
-      {<Button variant="contained" type="submit"> Siguiente</Button>}
+      {<Button variant="contained" type="submit"> Guardar Informacion </Button>}
     </form>
   )
 }

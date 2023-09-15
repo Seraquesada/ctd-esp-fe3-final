@@ -1,6 +1,6 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useEffect, useRef, useState } from 'react'
 
-import { useFormContext } from "react-hook-form";
+import { set, useFormContext } from "react-hook-form";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import { Button } from "@mui/material";
@@ -26,8 +26,34 @@ interface Props {
     handleNext: () => void
 }
 
+interface DefaultValues {
+    customer: {
+        name: string;
+        lastname: string;
+        email: string;
+    };
+    address: {
+        address1: string;
+        address2: string;
+        city: string;
+        state: string;
+        zipCode: string;
+    };
+    card: {
+        number: string;
+        cvc: string;
+        expDate: string;
+        nameOnCard: string;
+    };
+    order: {
+        name: string,
+        image: string,
+        price: number
+    }
 
-const defaultValues = {
+}
+
+const defaultValues: DefaultValues = {
     customer: {
         name: "",
         lastname: "",
@@ -46,58 +72,88 @@ const defaultValues = {
         expDate: "",
         nameOnCard: "",
     },
+    order: {
+        name: "",
+        image: "",
+        price: 0
+    }
 
 };
+
+
 
 const CustomForm: FC<Props> = ({ result, activeStep, handleBack, handleNext }) => {
 
     // const { handleSubmit, getValues, getFieldState, formState } = useFormContext();
 
+    const router = useRouter() 
     
-    
-    
-    const [data, setData] = useState(defaultValues)
-    console.log(data.address, data.card,data.customer)
-    const router = useRouter()
-    const redirect = (response: CheckoutInput) => {
-        if (response?.card) {
-            router.push(`/checkout?=comicId${result.id}`);
-        }
+    const name = result?.title!
+    const image = result?.thumbnail.path.concat(".", result?.thumbnail.extension)!
+    const price = result?.price!
+
+    const order : typeof defaultValues.order = {
+        name,
+        image,
+        price
     }
 
-    const handlerCustomer = (data: any) => {
-        setData({ ...data, customer: data })
-        handleNext()
+    const [info, setinfo] = useState(defaultValues)
 
-    }
-    const handlerAddress = (data: any) => {
-        setData({ ...data, address: data })
-        handleNext()
-    }
-    const handlerCard = (data: any) => {
-        setData({ ...data, card: data })
-        
-    }
-
-    const onSubmit = async (data: any) => {
-        const name = result?.title
-        const image = result?.thumbnail.path.concat(".", result?.thumbnail.extension)
-        const price = result.price
-
-        const { order } =
-        {
+    const formatearInfo = (data: DefaultValues): CheckoutInput => {
+        const dataFormat = {
+            customer: {
+                ...data.customer,
+                address: {
+                    ...data.address
+                },
+            },
+            card: {
+                ...data.card
+            },
             order: {
-                name,
-                image,
-                price
-            }
-        }
-        data.order = order
-        console.log(data)
+                ...data.order
+            },
 
-        // await postCheckOut(data)
-        // redirect(await postCheckOut(data))
+        }
+        return dataFormat;
+    }
+
+    const onSubmit = async () => {
+        try {
+            const dataFormateada = formatearInfo(info);
+            const response = await postCheckOut(dataFormateada);
+            
+        } catch (error) {
+            console.error('API call error:', error);
+        }
     };
+
+    const handlerCustomer = (data: typeof defaultValues.customer) => {
+
+        setinfo({
+            ...info,
+            customer: { ...data },
+            order: { ...order }
+        });
+        handleNext()
+
+    }
+    const handlerAddress = (data: typeof defaultValues.address) => {
+        setinfo({
+            ...info,
+            address: { ...data },
+        });
+        handleNext()
+    }
+
+    const handlerCard = (data: typeof defaultValues.card) => {
+        setinfo({
+            ...info,
+            card: { ...data },
+        })
+
+    }
 
 
     return (
@@ -106,21 +162,19 @@ const CustomForm: FC<Props> = ({ result, activeStep, handleBack, handleNext }) =
                 elevation={8}
                 sx={{ p: "32px", display: "flex", flexDirection: "column", gap: 3 }}
             >
-
-                <div >
-
+                <div onSubmit={onSubmit} >
                     {activeStep === 0 && <DataPersonal handleNext={handleNext} handlerCustomer={handlerCustomer} />}
 
                     {activeStep === 1 && < DataDireccionEntrega handleNext={handleNext} handlerAddress={handlerAddress} />}
 
                     {activeStep === 2 && <DataDelPago handlerCard={handlerCard} />}
 
-
                     <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-                        {/* {activeStep >= 1 && <Button onClick={handleBack}>Anterior</Button>}
-                        {activeStep < 2 && <Button variant="contained" onClick={handleNext}>Siguiente</Button>}
-                        {activeStep === 2 && <Button variant="contained" type="submit" >Enviar</Button>} */}
+                        {activeStep >= 1 && <Button onClick={handleBack}>Anterior</Button>}
                     </Box>
+
+
+                    {activeStep === 2 && <Button type='submit'>Enviar</Button>}
                 </div>
 
             </Paper>

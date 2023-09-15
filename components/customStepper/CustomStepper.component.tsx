@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -15,7 +15,7 @@ interface Props {
 }
 
 export default function HorizontalLinearStepper({ result }: Props) {
-    const [activeStep, setActiveStep] = React.useState(0);
+    const [activeStep, setActiveStep] = useState(0);
 
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -25,7 +25,6 @@ export default function HorizontalLinearStepper({ result }: Props) {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
 
-    const methods = useForm()
 
     return (
 
@@ -39,9 +38,9 @@ export default function HorizontalLinearStepper({ result }: Props) {
                     );
                 })}
             </Stepper>
-            
-                <CustomForm activeStep={activeStep} result={result} handleBack={handleBack} handleNext={handleNext} />
-            
+
+            <CustomForm activeStep={activeStep} result={result} handleBack={handleBack} handleNext={handleNext} />
+
         </Box>
 
     );
