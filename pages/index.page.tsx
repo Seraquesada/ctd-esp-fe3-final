@@ -16,6 +16,13 @@ interface Props {
 
 const Index: NextPage<Props> = ({ comics }) => {
 
+
+    //Hola profe muchas gracias por todo,
+    //lo que me falto fue el tema de que funcione bien el post
+    // por lo tanto la pagina de confirmacion de compra "no esta" 
+    //el coverge esta al 46,
+    
+
     const router = useRouter()
 
     const [currentPage, setCurrentPage] = useState<number>(0)

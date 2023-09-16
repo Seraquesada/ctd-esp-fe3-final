@@ -9,7 +9,7 @@ export const postCheckOut = async (data: CheckoutInput) => {
         body: JSON.stringify(data)
     };
 
-    const req = await fetch(`http://localhost:3000/api/checkout-orden`, options)
+    const req = await fetch(`https://ctd-esp-fe3-final-roan-five.vercel.app/api/checkout-orden`, options)
     
     return await req.json();
 }
